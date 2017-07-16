@@ -1,0 +1,35 @@
+html, 
+body {
+    height: 100%;
+}
+
+#container{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.home-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+}
+
+a.home-tab{
+    width: 100%;
+    height: 100%;
+}
+
+
+.home-tab-table{
+    height: 100%;
+}
+
+.home-tab-table tr td{
+    border: 2px solid #ddd;
+    height: 50%;
+    width: 50%;
+    vertical-align: middle !important; 
+}
+
