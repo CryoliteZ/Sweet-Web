@@ -1,7 +1,7 @@
 
 $(function(){
     genProductTypeList();
- 
+
 });
 
 var cart = {
@@ -68,7 +68,7 @@ function genProductTypeList(){
     for(var i = 0; i < tree.length; ++i){
         $('#product-list-table').append(' <li class="list-group-item" onclick = "genProductList(\'' + tree[i].uid  +'\')">' + tree[i].category+'</li>');
     }
-    $('#product-list-table').append(' <li class="list-group-item  list-group-item-success" onclick = "submit2cart()"> 確認訂單</li>');
+    // $('#product-list-table').append(' <li class="list-group-item  list-group-item-success" onclick = "submit2cart()"> 確認訂單</li>');
     $('#product-list-table').append(' <li class="list-group-item  list-group-item-warning" onclick = "backPage()"> 上一頁</li>');
     updateState(1);
 
@@ -76,9 +76,10 @@ function genProductTypeList(){
 }
 
 function genProductList(c){
+    console.log(c);
     var idx = parseInt(c)-1;
      $('#product-list-table').empty();
-     for(var i = 0; i < tree[ idx].product.length; ++i){
+     for(var i = 0; i < tree[idx].product.length; ++i){
         $('#product-list-table').append(' <li class="list-group-item" data-type="'+ tree[idx].category+'" data-product="' + tree[idx].product[i]+'"onclick = "add2cart(\'' + tree[idx].uid + '/' + tree[idx].product[i] + '\');">' + tree[idx].product[i]+'</li>');
         // $('#product-list-table').append(' <li class="list-。group-item" onclick = "add2cart(\'' + tree[idx].category + '\)">' + tree[idx].product[i]+'</li>');
      }
@@ -92,12 +93,12 @@ function add2cart(paras){
    var paras = paras.split('/');
    var curProduct = {		
 		name: paras[1],
-		count: 1
+		number: 1
 	};
 	var flag = true;
 	for(var i = 0; i < cart.products.length; ++i){
 		if(cart.products[i].name == curProduct.name){
-			cart.products[i].count += 1;			
+			cart.products[i].number += 1;			
 			flag = false;
 			break;
 		}
@@ -116,14 +117,14 @@ function add2cart(paras){
 function submit2cart(c){
     $('#product-list-table').empty();
     for(var i = 0; i < cart.products.length; ++i){
-        $('#product-list-table').append(' <li class="list-group-item">' + cart.products[i].name + cart.products[i].count+'</li>');
+        $('#product-list-table').append(' <li class="list-group-item">' + cart.products[i].name + cart.products[i].number+'</li>');
     }
     $('#product-list-table').append(' <li class="list-group-item  list-group-item-info" onclick = "submit2queue();"> 結帳<li>');  
     $('#product-list-table').append(' <li class="list-group-item  list-group-item-warning" onclick = "backPage(\''+ c +'\');"> 上一頁</li>');
     // @voice
     responsiveVoice.speak("訂單如下", "Chinese Female");
 	for(var i = 0; i < cart.products.length; ++i){		
-		responsiveVoice.speak(cart.products[i].count.toString() + "個" +  cart.products[i].name , "Chinese Female");
+		responsiveVoice.speak(cart.products[i].number.toString() + "個" +  cart.products[i].name , "Chinese Female");
 	}
     updateState(3);  
 }
@@ -149,8 +150,26 @@ function updateState(page){
 }
 
 function submit2queue(){
-    localStorage.setItem( 'cart', JSON.stringify(cart) );
-    console.log( JSON.parse( localStorage.getItem( 'cart' ) ) );
+    // localStorage.setItem( 'cart', JSON.stringify(cart) );
+    // console.log( JSON.parse( localStorage.getItem( 'cart' ) ) );
+    console.log(cart.products);
+    $.ajax( {
+        method: 'POST',
+        url: "https://nonsenseworkshop.com:2053/pos/newOrder/",
+        success:  function(d){
+            console.log(d);
+        },
+        data: JSON.stringify({
+            table: '1',
+            orders: cart.products
+        }),
+
+        async: false,
+        xhrFields:{
+            withCredentials: true
+        },
+        crossDomain: true
+	});
     // @voice
     responsiveVoice.speak("結帳完成", "Chinese Female");
     window.history.back();

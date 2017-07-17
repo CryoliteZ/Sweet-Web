@@ -1,32 +1,87 @@
-$(function(){
+$(function () {
     genQueueList();
- 
+
+    $('.list-group-item').click(function(){
+        $(this).attr('alvin');
+    });
+
+
 });
 
 
-function genQueueList(){
-    var mCart = JSON.parse( localStorage.getItem( 'cart' ) );
-    if(mCart){
-        for(var i = 0; i < mCart.products.length; ++i){
-            $('#queue-list').append(' <li class="list-group-item">' + mCart.products[i].name + ' ' + mCart.products[i].count+'</li>');
+function genQueueList() {
+    var queue;
+    $.ajax({
+        url: "https://nonsenseworkshop.com:2053/pos/queue/",
+        success: function (d) {
+            queue = d.queue;
+            console.log(queue);
+        },
+        async: false,
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true,
+        async: false
+    });
+
+    if (queue) {
+        for (var i = 0; i < queue.length; ++i) {
+            $('#queue-list').append(' <li class="list-group-item" alvin="' + 3 + '">' + queue[i].name + ' ' + queue[i].number + '</li>');
         }
         $('#queue-list').append(' <li class="list-group-item  list-group-item-danger" onclick = "clearQueue()"> 清除佇列</li>');
         $('#queue-list').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
         // @voice
         responsiveVoice.speak("佇列如下", "Chinese Female");
-		for(var i = 0; i < mCart.products.length; ++i){			
-			responsiveVoice.speak(mCart.products[i].count.toString() + "個" +  mCart.products[i].name , "Chinese Female");
-		}
+        for (var i = 0; i < queue.length; ++i) {
+            responsiveVoice.speak(queue[i].number.toString() + "個" + queue[i].name, "Chinese Female");
+        }
     }
-    else{
-        $('#queue-list').append(' <li class="list-group-item"> 目前沒有東西在佇列中</li>');        
+    else {
+        responsiveVoice.speak("目前沒有東西在佇列中", "Chinese Female");
+        $('#queue-list').append(' <li class="list-group-item"> 目前沒有東西在佇列中</li>');
         $('#queue-list').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
     }
-    
+
 }
 
-function clearQueue(){
+
+
+
+function clearQueue() {
+    var queue;
+    $.ajax({
+        url: "https://nonsenseworkshop.com:2053/pos/queue/",
+        success: function (d) {
+            queue = d.queue;
+        },
+        async: false,
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true,
+        async: false
+    });
+    for (var i = 0; i < queue.length; ++i) {
+        $.ajax({
+            method: "POST",
+            url: "https://nonsenseworkshop.com:2053/pos/completeOrder/",
+            data: {
+                'id': queue[i].id
+            },
+            success: function (d) {
+                console.log(d);
+            },
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            async: false
+        });
+    }
+
     responsiveVoice.speak("佇列清除", "Chinese Female");
     localStorage.clear();
-    window.history.back();
+    // window.history.back();
 }
