@@ -1,8 +1,25 @@
 $(function () {
     genQueueList();
-
-    $('.list-group-item').click(function(){
-        $(this).attr('alvin');
+     $('.product-in-q').click(function(){
+        console.log($(this).attr('product-id'));
+        $.ajax({
+            method: "POST",
+            url: "https://nonsenseworkshop.com:2053/pos/completeOrder/",
+            data: {
+                'id': $(this).attr('product-id')
+            },
+            success: function (d) {
+                console.log(d);
+            },
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            async: false
+        });
+        responsiveVoice.speak("完成了" + $(this).attr('product-name'), "Chinese Female");
+        $(this).remove();
     });
 
 
@@ -14,8 +31,9 @@ function genQueueList() {
     $.ajax({
         url: "https://nonsenseworkshop.com:2053/pos/queue/",
         success: function (d) {
+
             queue = d.queue;
-            console.log(queue);
+            console.log(d);
         },
         async: false,
         xhrFields: {
@@ -27,7 +45,7 @@ function genQueueList() {
 
     if (queue) {
         for (var i = 0; i < queue.length; ++i) {
-            $('#queue-list').append(' <li class="list-group-item" alvin="' + 3 + '">' + queue[i].name + ' ' + queue[i].number + '</li>');
+            $('#queue-list').append(' <li class="list-group-item product-in-q" product-id="' + queue[i].id + '" product-name = "'+ queue[i].name +'">' + queue[i].name + ' ' + queue[i].number + '</li>');
         }
         $('#queue-list').append(' <li class="list-group-item  list-group-item-danger" onclick = "clearQueue()"> 清除佇列</li>');
         $('#queue-list').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
@@ -83,5 +101,5 @@ function clearQueue() {
 
     responsiveVoice.speak("佇列清除", "Chinese Female");
     localStorage.clear();
-    // window.history.back();
+    window.history.back();
 }

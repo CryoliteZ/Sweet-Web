@@ -33,3 +33,10 @@ a.home-tab{
     vertical-align: middle !important; 
 }
 
+
+.list-group-item {
+    text-align: center;
+     width: 100%;
+    height: 100%;
+
+}

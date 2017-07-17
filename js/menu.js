@@ -1,5 +1,6 @@
 
 $(function(){
+    
     genProductTypeList();
 
 });
@@ -109,7 +110,7 @@ function add2cart(paras){
 
     // @voice
     var string = "已新增";
-	responsiveVoice.speak(string + curProduct.name, "Chinese Female");
+	responsiveVoice.speak(string +curProduct.name , "Chinese Female");
     
     // console.log(cart.products);
 
@@ -124,7 +125,8 @@ function submit2cart(c){
     // @voice
     responsiveVoice.speak("訂單如下", "Chinese Female");
 	for(var i = 0; i < cart.products.length; ++i){		
-		responsiveVoice.speak(cart.products[i].number.toString() + "個" +  cart.products[i].name , "Chinese Female");
+        responsiveVoice.speak(cart.products[i].number.toString() + "個" +  cart.products[i].name , "Chinese Female");
+		
 	}
     updateState(3);  
 }

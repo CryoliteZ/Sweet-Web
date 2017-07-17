@@ -1,4 +1,5 @@
 $(function(){
+    $('#a-btn').focus();
 
     // var url = "path/to/your/script.php"; // the script where you handle the form input.
     console.log('hi there');
@@ -11,6 +12,7 @@ $(function(){
 var password = "";
 
 function insertPass(pass){
+    responsiveVoice.speak("輸入"+pass, "Chinese Female");
     password += pass;
     console.log(password);
 }
