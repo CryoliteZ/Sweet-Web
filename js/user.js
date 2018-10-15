@@ -29,6 +29,7 @@ function submitPassword(){
             xhrFields:{
                 withCredentials : true
             },
+            timeout: 3000,
             crossDomain : true,
             success: function(data)
             {

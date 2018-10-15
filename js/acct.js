@@ -9,11 +9,13 @@ $(function(){
             xhrFields:{
                 withCredentials : true
             },
-            crossDomain : true,
+			crossDomain : true,
+            timeout: 3000,
             success: function(data)
             {
                 console.log(data); // show response from the php script.
-            }
+			}
+			
     });
     genAcctList();
  
@@ -73,6 +75,7 @@ function genReport(idx){
 				withCredentials: true
 			},
 			crossDomain: true,
+			timeout: 3000,
 			async: false,
 		});
 		
@@ -90,6 +93,7 @@ function genReport(idx){
 			},
 			crossDomain: true,
 			async: false,
+			timeout: 3000,
 		});
 		if(idx == 2){
 			for (var property in data.categoryCount) {
@@ -127,11 +131,6 @@ function genReport(idx){
 			var categorySubtotal = data.categorySubtotal;
 			var maxKey = Object.keys(categorySubtotal).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
 			responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + maxKey + ' ，共收益' + categorySubtotal[maxKey] + '元', "Chinese Female");
-
-
-			
-
-
 		}
 		else{
 

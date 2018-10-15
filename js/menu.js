@@ -170,6 +170,7 @@ function submit2queue(){
         xhrFields:{
             withCredentials: true
         },
+        timeout: 3000,
         crossDomain: true
 	});
     // @voice
