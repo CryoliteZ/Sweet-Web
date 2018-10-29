@@ -8,5 +8,9 @@ Sweet Web is a visually impaired friendly web project, aims to help [甜裡開�
 
 Demo webiste: [link](https://cryolitez.github.io/Sweet-Web/)
 
-> Note: Unfortunately our backend API server is down at this moment
+## Related Projects
+[Sweet-Bot](https://github.com/CryoliteZ/Sweet-Bot)
 
+ A Line Chatbot using IBM Watson NLP API, where users can make orders through simple voice commands.
+ 
+ This Chatbot is also a part of the project to help  [甜裡開始](https://www.facebook.com/sweet51909/)
