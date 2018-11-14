@@ -122,12 +122,14 @@ function submit2cart(c){
     }
     $('#product-list-table').append(' <li class="list-group-item  list-group-item-info" onclick = "submit2queue();"> 結帳<li>');  
     $('#product-list-table').append(' <li class="list-group-item  list-group-item-warning" onclick = "backPage(\''+ c +'\');"> 上一頁</li>');
+
+
     // @voice
-    responsiveVoice.speak("訂單如下", "Chinese Female");
-	for(var i = 0; i < cart.products.length; ++i){		
-        responsiveVoice.speak(cart.products[i].number.toString() + "個" +  cart.products[i].name , "Chinese Female");
-		
-	}
+    var thequeue = "";
+	for(var i = 0; i < cart.products.length; ++i){	
+        thequeue = thequeue + 	cart.products[i].number.toString() + "個" +  cart.products[i].name;
+    }
+    responsiveVoice.speak("訂單如下" + thequeue, "Chinese Female");
     updateState(3);  
 }
 
@@ -157,25 +159,30 @@ function submit2queue(){
     console.log(cart.products);
     $.ajax( {
         method: 'POST',
-        url: "https://nonsenseworkshop.com:2053/pos/newOrder/",
-        success:  function(d){
-            console.log(d);
-        },
         data: JSON.stringify({
             table: '1',
             orders: cart.products
         }),
+        url: "https://nonsenseworkshop.com:2053/pos/newOrder/",
+        success:  function(d){
+            console.log(d);
+            // @voice
+            responsiveVoice.speak("結帳完成", "Chinese Female");
+            window.location.href = '../../'; 
+        },
+        error: function name(params) {
+         // @voice
+            responsiveVoice.speak("結帳失敗", "Chinese Female");
+            window.location.href = '../../'; 
+        },
 
-        async: false,
         xhrFields:{
             withCredentials: true
         },
-        timeout: 3000,
+        timeout: 1000,
         crossDomain: true
 	});
-    // @voice
-    responsiveVoice.speak("結帳完成", "Chinese Female");
-    window.history.back();
+   
 }
 
 function backPage(c){

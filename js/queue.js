@@ -52,7 +52,12 @@ function genQueueList() {
                 $('#queue-list').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
             }
         },
-        async: true,
+        error: function(){
+            responsiveVoice.speak("目前沒有東西在佇列中", "Chinese Female");
+            $('#queue-list').append(' <li class="list-group-item"> 目前沒有東西在佇列中</li>');
+            $('#queue-list').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
+        },
+        // async: true,
         xhrFields: {
             withCredentials: true
         },

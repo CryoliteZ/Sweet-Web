@@ -15,7 +15,6 @@ $(function(){
             {
                 console.log(data); // show response from the php script.
 			}
-			
     });
     genAcctList();
  
@@ -76,7 +75,11 @@ function genReport(idx){
 			},
 			crossDomain: true,
 			timeout: 3000,
-			async: false,
+			error: function(){
+				console.log('err');
+				responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + '' + ' ，共收益' + ''+ '元', "Chinese Female");
+			},
+			// async: false,
 		});
 		
 	}
@@ -86,29 +89,27 @@ function genReport(idx){
 			url: "https://nonsenseworkshop.com:2053/pos/report/week/",
 			success:  function(d){
 				data = d;
-				console.log(data);		
+				console.log(data);	
+				if(idx == 2){
+					for (var property in data.categoryCount) {
+						if (data.categoryCount.hasOwnProperty(property)) {
+							console.log( property + ' '+ data.categoryCount[property]);
+						}
+					}
+				}
+			},
+			timeout: 3000,
+			error: function(){
+				console.log('err');
+				responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + '' + ' ，共收益' + ''+ '元', "Chinese Female");
 			},
 			xhrFields:{
 				withCredentials: true
 			},
 			crossDomain: true,
-			async: false,
-			timeout: 3000,
+			// async: false,
 		});
-		if(idx == 2){
-			for (var property in data.categoryCount) {
-				if (data.categoryCount.hasOwnProperty(property)) {
-					console.log( property + ' '+ data.categoryCount[property]);
-				}
-			}
-			
-
-
-		}
-		else{
-
-		}
-
+		
 	}
 	else if(idx == 4 || idx == 5){
 		var unit_string = '月';
@@ -116,26 +117,32 @@ function genReport(idx){
 			url: "https://nonsenseworkshop.com:2053/pos/report/month/",
 			success:  function(d){
 				data = d;
-				console.log(data);		
+				console.log(data);
+				if(idx == 4){
+					var categoryCount = data.categoryCount;
+					var maxKey = Object.keys(categoryCount).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
+					responsiveVoice.speak( '本' + unit_string + '最受歡迎的品項欄位為' + maxKey + ' ，共有' + categoryCount[maxKey] + '比訂單', "Chinese Female");
+					var categorySubtotal = data.categorySubtotal;
+					var maxKey = Object.keys(categorySubtotal).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
+					responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + maxKey + ' ，共收益' + categorySubtotal[maxKey] + '元', "Chinese Female");
+				}
+				else{
+		
+				}
+				
+			},
+			error: function (){
+				console.log('err');
+				responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + '' + ' ，共收益' + ''+ '元', "Chinese Female");
 			},
 			xhrFields:{
 				withCredentials: true
 			},
 			crossDomain: true,
-			async: false,
+			timeout: 3000
+			// async: false,
 		});
-		if(idx == 4){
-			var categoryCount = data.categoryCount;
-			var maxKey = Object.keys(categoryCount).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
-			responsiveVoice.speak( '本' + unit_string + '最受歡迎的品項欄位為' + maxKey + ' ，共有' + categoryCount[maxKey] + '比訂單', "Chinese Female");
-			var categorySubtotal = data.categorySubtotal;
-			var maxKey = Object.keys(categorySubtotal).reduce(function(a, b){ return obj[a] > obj[b] ? a : b });
-			responsiveVoice.speak( '本' + unit_string + '收益最高的品項欄位為' + maxKey + ' ，共收益' + categorySubtotal[maxKey] + '元', "Chinese Female");
-		}
-		else{
-
-		}
-
+	
 	
 	}
 	console.log(idx);

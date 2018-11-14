@@ -1,10 +1,6 @@
 $(function(){
     $('#a-btn').focus();
-
     // var url = "path/to/your/script.php"; // the script where you handle the form input.
-    console.log('hi there');
-   
-        
     $('#function-group').append(' <li class="list-group-item  list-group-item-info" onclick = "submitPassword()"> 送出</li>');
     $('#function-group').append(' <li class="list-group-item  list-group-item-warning" onclick = "window.history.back();"> 上一頁</li>');
 });
@@ -29,25 +25,27 @@ function submitPassword(){
             xhrFields:{
                 withCredentials : true
             },
-            timeout: 3000,
             crossDomain : true,
             success: function(data)
             {
                 response = data;
-              
-               
+                if(response.success == "true"){
+                    responsiveVoice.speak("登入成功", "Chinese Female");
+                    window.history.back();
+                    return;
+            
+                }
+                else{
+                    responsiveVoice.speak("登入失敗", "Chinese Female");
+                }
             },
-            async: false,
+            timeout: 1000,
+			error: function(){
+				console.log('err');
+				responsiveVoice.speak( '登入失敗', "Chinese Female");
+			},
     })
-    if(response.success == "true"){
-        responsiveVoice.speak("登入成功", "Chinese Female");
-        window.history.back();
-        return;
-
-    }
-    else{
-        responsiveVoice.speak("登入失敗", "Chinese Female");
-    }
+    
     
 }
 
