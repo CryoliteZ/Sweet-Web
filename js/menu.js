@@ -168,12 +168,12 @@ function submit2queue(){
             console.log(d);
             // @voice
             responsiveVoice.speak("結帳完成", "Chinese Female");
-            window.location.href = '../../'; 
+            window.location.href = '../'; 
         },
         error: function name(params) {
          // @voice
             responsiveVoice.speak("結帳失敗", "Chinese Female");
-            window.location.href = '../../'; 
+            window.location.href = '../'; 
         },
 
         xhrFields:{
