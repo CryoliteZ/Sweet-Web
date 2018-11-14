@@ -1,7 +1,7 @@
 # Sweet Web
 
 ## Project Goal
-Sweet Web is a visually impaired friendly web project, aims to help [甜裡開始] cafe(https://www.facebook.com/sweet51909/). We integrate “VoiceOver”, which is a screen reader built into iOS, so that the manager of the café can use a few simple gestures to navigate the website and easily manage the basic operations (POS system, order queue and more) of the café shop.
+Sweet Web is a visually impaired friendly web project, aims to help [甜裡開始](https://www.facebook.com/sweet51909/) cafe. We integrate “VoiceOver”, which is a screen reader built into iOS, so that the manager of the café can use a few simple gestures to navigate the website and easily manage the basic operations (POS system, order queue and more) of the café shop.
 
 ## Related Projects
 ### [Sweet-Bot](https://github.com/CryoliteZ/Sweet-Bot)
